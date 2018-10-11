@@ -1,2 +1,4 @@
 *.docx
 *.png
+data/
+*.pyc
