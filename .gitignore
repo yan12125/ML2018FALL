@@ -2,3 +2,9 @@
 *.png
 data/
 *.pyc
+submission*.txt
+
+*.pdf
+*.synctex.gz
+*.log
+*.aux

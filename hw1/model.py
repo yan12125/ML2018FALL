@@ -2,6 +2,9 @@ import numpy as np
 
 
 class Linear_Regression:
+    def __init__(self, regularization_term=0):
+        self.regularization_term = regularization_term
+
     def parameter_init(self, dim):
         self.b = 0
         self.W = np.zeros((dim, 1))
@@ -10,7 +13,7 @@ class Linear_Regression:
         return np.dot(X, self.W) + self.b
 
     def RMSELoss(self, X, Y):
-        return np.sqrt(np.mean((Y - self.predict(X)) ** 2))
+        return np.sqrt(np.mean((Y - self.predict(X)) ** 2) + self.regularization_term * np.sum(self.W ** 2))
 
     def train(self, X, Y, epochs=10000, lr=0.1):
         batch_size = X.shape[0]
@@ -20,10 +23,11 @@ class Linear_Regression:
         lr_b = 0
         lr_W = np.zeros((W_dim, 1))
 
+        loss_data = []
         for epoch in range(epochs):
             # mse loss
             grad_b = -2 * np.sum(Y - self.predict(X)) / batch_size
-            grad_W = -2 * np.dot(X.T, (Y - self.predict(X))) / batch_size
+            grad_W = -2 * np.dot(X.T, (Y - self.predict(X))) / batch_size + 2 * self.regularization_term * self.W
             # adagrad
             lr_b += grad_b ** 2
             lr_W += grad_W ** 2
@@ -33,3 +37,7 @@ class Linear_Regression:
             delta_W = lr / np.sqrt(lr_W) * grad_W
             self.b = self.b - delta_b
             self.W = self.W - delta_W
+
+            loss_data.append(self.RMSELoss(X, Y))
+
+        return loss_data

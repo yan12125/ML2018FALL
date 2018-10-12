@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage[fontset=ubuntu]{ctex}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\setcounter{section}{3}
+
+\section{Question 4}
+\subsection{Question 4-a}
+
+\emph{Question} Given tn is the data point of the data set $D=\{t_N, \ldots, t_N\}$. Each data point $t_n$ is associated with a weighting factor $r_n > 0$.
+The sum-of-squares error function becomes:
+\begin{equation*}
+E_D(\textbf w)=\frac{1}{2}\sum\limits_{n=1}^N r_n(t_n−\mathbf w^{\mathbf T} \mathbf x_n)^2
+\end{equation*}
+
+Find the solution $\mathbf w^∗$ that minimizes the error function.
+
+\emph{Answer} 假設$\mathbf w$是一個$k$維的向量$(w_1, w_2, \ldots, w_k)$。將$E_D(\mathbf w)$對$\mathbf w$的第$i$個分量$w_i$偏微分得到：
+
+\begin{equation}\label{differential}
+\frac{\partial}{\partial w_i}E_D(\mathbf w)
+=\frac{1}{2}\cdot2\sum\limits_{n=1}^N r_n(t_n-\mathbf w^{\mathbf T} \mathbf x_n)(-x_{ni})
+\end{equation}
+
+方程式\ref{differential}中，$x_{ni}$表示向量$\mathbf x_n$的第$i$個分量。
+
+為求極值，令$\frac{\partial}{\partial w_i}E_D(\mathbf w)$在$w_i ^*$的值為0。因此：
+
+\begin{equation}
+0=\sum\limits_{n=1}^N r_n(t_n-\mathbf w^{*\mathbf T} \mathbf x_n)(-x_{ni})
+\end{equation}
+
+移項並取轉置得到：
+
+\begin{equation}
+\begin{aligned}
+\sum\limits_{n=1}^N r_n t_n x_{ni}
+=& \sum\limits_{n=1}^N r_n(\mathbf w^{*\mathbf T} \mathbf x_n)x_{ni} \\
+=& \sum\limits_{n=1}^N r_n x_{ni} ( \mathbf x_n^{\mathbf T} \mathbf w^*)
+\end{aligned}
+\end{equation}
+
+將所有分量合併回向量：
+
+\begin{equation}\label{almost}
+\sum\limits_{n=1}^N r_n t_n \mathbf x_n
+= \sum\limits_{n=1}^N r_n \mathbf x_n \mathbf x_n^{\mathbf T} \mathbf w^*
+\end{equation}
+
+方程式\ref{almost}中等號右邊的$\mathbf w^*$與$n$無關，餘下的項為一個方陣。故：
+
+\begin{equation}\label{minimum}
+\mathbf w^*=(\sum\limits_{n=1}^N r_n \mathbf x_n \mathbf x_n^{\mathbf T})^{-1}\sum\limits_{n=1}^N r_n t_n \mathbf x_n
+\end{equation}
+
+$E_D(\mathbf w)$對$w_i$二次偏微分的結果為：
+
+\begin{equation}
+\frac{\partial^2}{\partial w_i^2}E_D(\mathbf w)
+=\sum\limits_{n=1}^N r_n x_{ni}^2
+\end{equation}
+
+此值為正，因此方程式\ref{minimum}中所列極值為最小值。
+
+\subsection{Question 4-b}
+
+\emph{Question} Following the previous problem (4-a), if
+\begin{equation*}
+\mathbf t = [t_1 t_2 t_3] = \begin{bmatrix}
+    0&10&5
+\end{bmatrix},
+\mathbf X=[\mathbf{x_1 x_2 x_3}] = \begin{bmatrix}
+    2 & 5 & 5 \\[0.3em]
+    3 & 1 & 6 \\[0.3em]
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+r_1 = 2, r_2 = 1, r_3 = 3
+\end{equation*}
+
+\section{Question 5}
+\emph{Question} Given a linear model:
+
+\begin{equation*}
+y(x, \mathbf w) = w_0 + \sum_{i=1}^{D}w_i x_i
+\end{equation*}
+
+with a sum-of-squares error function:
+
+\begin{equation*}
+E(\mathbf w) = \frac 1 2 \sum_{n=1}^{N} \big(y(x_n, \mathbf w) -t_n ) \big)^2
+\end{equation*}
+
+where $t_n$ is the data point of the data set $\mathcal D=\{t_1, \ldots,t_N \}$
+
+Suppose that Gaussian noise $\epsilon_i$ with zero mean and variance $\sigma^2$ is added independently to each of the input variables $x_i$.
+By making use of $\mathbb E[\epsilon_i \epsilon_j] = \delta_{ij} \sigma^2$ and $\mathbb E[\epsilon_i] = 0$ show that minimizing $E$ averaged over the noise distribution is equivalent to minimizing the sum-of-squares error for noise-free input variables with the addition of a weight-decay regularization term, in which the bias parameter $w_0$ is omitted from the regularizer.
+
+\emph{Answer} $E(\mathbf w)$對於$\epsilon_i$的平均為其期望值：
+
+\begin{equation}
+\begin{aligned}
+\mathbb E[E(\mathbf w)]
+=& \frac{1}{2}\mathbb E\left[\sum\limits_{n=1}^N (y(x_n, \mathbf w)-t_n)^2\right]\\
+=& \frac{1}{2}\mathbb E\left[\sum\limits_{n=1}^N \left(w_0+\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)-t_n\right)^2\right]\\
+=& \frac{1}{2}\mathbb E\left[\sum\limits_{n=1}^N (w_0-t_n)^2+2(w_0-t_n)\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)+\left(\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)\right)^2\right]\\
+=& \frac{1}{2}\sum\limits_{n=1}^N (w_0-t_n)^2+2(w_0-t_n)\sum\limits_{i=1}^D w_i x_{ni}+\mathbb E\left[\left(\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)\right)^2\right]\\
+\end{aligned}
+\end{equation}
+
+第三項進一步展開：
+
+\begin{equation}
+\begin{aligned}
+& \mathbb E\left[\left(\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)\right)^2\right]\\
+=& \sum\limits_{i=1}^D w_i^2 x_{ni}^2 + w_i^2 \mathbb E[\epsilon_i^2] + 2\sum\limits_{i=1}^D \sum\limits_{\genfrac{}{}{0pt}{2}{j=1}{j\neq i}}^D w_i w_j \mathbb E[(x_{ni}+\epsilon_i)(x_{nj}+\epsilon_j)] \\
+=& \sum\limits_{i=1}^D w_i^2 x_{ni}^2 + w_i^2 \sigma^2 + 2\sum\limits_{i=1}^D \sum\limits_{\genfrac{}{}{0pt}{2}{j=1}{j\neq i}}^D w_i w_j x_{ni} x_{nj} \\
+=& \sum\limits_{i=1}^D (w_i x_{ni} + w_i)^2 + w_i^2(\sigma^2-1)
+\end{aligned}
+\end{equation}
+
+$\mathbb E[E(\mathbf w)]$對$w$的第$k$個分量$w_k$的偏微分為：
+
+\begin{equation}
+\frac{\partial}{\partial w_k}\mathbb E[E(\mathbf w)] = \sum\limits_{n=1}^N 2(w_0-t_n)x_{nk}+2\sum\limits_{i=1}^D(w_i x_{ik} + w_i) x_{nk} + w_k^2 (\sigma^2-1)
+\end{equation}
+
+\section{Question 6}
+
+\emph{Question} $\mathbf A \in \mathbb R^{n \times n}, \alpha$, $\alpha$ is one of the elements of $\mathbf A$, prove that
+
+\begin{equation*}
+\frac{\mathrm d}{\mathrm d \alpha }\ln|\mathbf A|= \rm Tr\bigg(\mathbf A^{-1}\frac{\mathrm d}{\mathrm d \alpha}\mathbf A \bigg)
+\end{equation*}
+where the matrix $\mathbf A$ is a real, symmetric, non-singular matrix.
+
+\emph{Answer}
+
+\end{document}
