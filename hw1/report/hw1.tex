@@ -1,5 +1,13 @@
 \documentclass{article}
+\usepackage{ifplatform}
+
+\ifmacosx
+\usepackage[fontset=mac]{ctex}
+\fi
+\iflinux
 \usepackage[fontset=ubuntu]{ctex}
+\fi
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 
@@ -102,13 +110,12 @@ By making use of $\mathbb E[\epsilon_i \epsilon_j] = \delta_{ij} \sigma^2$ and $
 
 \emph{Answer} $E(\mathbf w)$對於$\epsilon_i$的平均為其期望值：
 
-\begin{equation}
+\begin{equation}\label{expectation}
 \begin{aligned}
 \mathbb E[E(\mathbf w)]
-=& \frac{1}{2}\mathbb E\left[\sum\limits_{n=1}^N (y(x_n, \mathbf w)-t_n)^2\right]\\
 =& \frac{1}{2}\mathbb E\left[\sum\limits_{n=1}^N \left(w_0+\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)-t_n\right)^2\right]\\
 =& \frac{1}{2}\mathbb E\left[\sum\limits_{n=1}^N (w_0-t_n)^2+2(w_0-t_n)\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)+\left(\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)\right)^2\right]\\
-=& \frac{1}{2}\sum\limits_{n=1}^N (w_0-t_n)^2+2(w_0-t_n)\sum\limits_{i=1}^D w_i x_{ni}+\mathbb E\left[\left(\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)\right)^2\right]\\
+=& \frac{1}{2}\left(\sum\limits_{n=1}^N (w_0-t_n)^2+2(w_0-t_n)\sum\limits_{i=1}^D w_i x_{ni}+\mathbb E\left[\left(\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)\right)^2\right]\right)\\
 \end{aligned}
 \end{equation}
 
@@ -117,17 +124,24 @@ By making use of $\mathbb E[\epsilon_i \epsilon_j] = \delta_{ij} \sigma^2$ and $
 \begin{equation}
 \begin{aligned}
 & \mathbb E\left[\left(\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_i)\right)^2\right]\\
-=& \sum\limits_{i=1}^D w_i^2 x_{ni}^2 + w_i^2 \mathbb E[\epsilon_i^2] + 2\sum\limits_{i=1}^D \sum\limits_{\genfrac{}{}{0pt}{2}{j=1}{j\neq i}}^D w_i w_j \mathbb E[(x_{ni}+\epsilon_i)(x_{nj}+\epsilon_j)] \\
-=& \sum\limits_{i=1}^D w_i^2 x_{ni}^2 + w_i^2 \sigma^2 + 2\sum\limits_{i=1}^D \sum\limits_{\genfrac{}{}{0pt}{2}{j=1}{j\neq i}}^D w_i w_j x_{ni} x_{nj} \\
-=& \sum\limits_{i=1}^D (w_i x_{ni} + w_i)^2 + w_i^2(\sigma^2-1)
+=& \sum\limits_{i=1}^D \left(w_i^2 x_{ni}^2 + w_i^2 \mathbb E[\epsilon_i^2]\right) + 2\sum\limits_{i=1}^D \sum\limits_{\genfrac{}{}{0pt}{2}{j=1}{j\neq i}}^D w_i w_j \mathbb E[(x_{ni}+\epsilon_i)(x_{nj}+\epsilon_j)] \\
+=& \sum\limits_{i=1}^D \left(w_i^2 x_{ni}^2 + w_i^2 \sigma^2\right) + 2\sum\limits_{i=1}^D \sum\limits_{\genfrac{}{}{0pt}{2}{j=1}{j\neq i}}^D w_i w_j x_{ni} x_{nj}\\
+=& \left(\sum\limits_{i=1}^D w_i x_{ni}\right)^2 + \sigma^2\sum\limits_{i=1}^D w_i^2
 \end{aligned}
 \end{equation}
 
-$\mathbb E[E(\mathbf w)]$對$w$的第$k$個分量$w_k$的偏微分為：
+合併回方程式\ref{expectation}，可以得到
 
-\begin{equation}
-\frac{\partial}{\partial w_k}\mathbb E[E(\mathbf w)] = \sum\limits_{n=1}^N 2(w_0-t_n)x_{nk}+2\sum\limits_{i=1}^D(w_i x_{ik} + w_i) x_{nk} + w_k^2 (\sigma^2-1)
+\begin{equation}\label{q5_final}
+\begin{aligned}
+ &\mathbb E[E(\mathbf w)]\\
+=& \frac{1}{2}\left(\sum\limits_{n=1}^N (w_0-t_n)^2+2(w_0-t_n)\sum\limits_{i=1}^D w_i x_{ni}+\left(\sum\limits_{i=1}^D w_i x_{ni}\right)^2 + \sigma^2\sum\limits_{i=1}^D w_i^2\right)\\
+=& \frac{1}{2}\left(\sum\limits_{n=1}^N \left(w_0-t_n+\sum\limits_{i=1}^D w_i x_{ni}\right)^2 + \sigma^2\sum\limits_{i=1}^D w_i^2\right)\\
+=& \frac{1}{2}\sum\limits_{n=1}^N (y(x_n, \mathbf w)-t_n)^2 + \frac{1}{2}\sigma^2\sum\limits_{i=1}^D w_i^2
+\end{aligned}
 \end{equation}
+
+方程式\ref{q5_final}中，等號右邊的第一項為不包含高斯雜訊的mean square error，因此在包含雜訊的$\mathbb E[E(w)]$中對$\mathbf w$最小化，相當於對於不包含雜訊的$E(w)$做最小化，附帶一個regularization parameter為$\frac{\sigma^2}{2}$的regularization項，且此項與$w_0$無關。
 
 \section{Question 6}
 
