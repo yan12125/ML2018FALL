@@ -90,6 +90,49 @@ $E_D(\mathbf w)$對$w_i$二次偏微分的結果為：
 r_1 = 2, r_2 = 1, r_3 = 3
 \end{equation*}
 
+\emph{Answer} 將數字代入
+\begin{equation}
+\begin{aligned}
+\sum\limits_{n=1}^N r_n \mathbf x_n \mathbf x_n^{\mathbf T}
+&=2\begin{bmatrix}
+4 & 6 \\
+6 & 9
+\end{bmatrix}+1\begin{bmatrix}
+25 & 5\\
+5 & 1
+\end{bmatrix}+3\begin{bmatrix}
+25 & 30 \\
+30 & 36
+\end{bmatrix}=\begin{bmatrix}
+108 & 107\\
+107 & 127
+\end{bmatrix}\\
+\sum\limits_{n=1}^N r_n t_n \mathbf x_n
+&=0\begin{bmatrix}
+2\\3
+\end{bmatrix}+10\begin{bmatrix}
+5\\1
+\end{bmatrix}+15\begin{bmatrix}
+5\\6
+\end{bmatrix}=\begin{bmatrix}
+125\\100
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+故
+
+\begin{equation}
+\mathbf w^*=\frac{1}{2267}\begin{bmatrix}
+127 & -107\\
+-107 & 108
+\end{bmatrix}\begin{bmatrix}
+125\\100
+\end{bmatrix}=\begin{bmatrix}
+\frac{5175}{2267}\\-\frac{2575}{2267}
+\end{bmatrix}
+\end{equation}
+
 \section{Question 5}
 \emph{Question} Given a linear model:
 
@@ -153,5 +196,72 @@ By making use of $\mathbb E[\epsilon_i \epsilon_j] = \delta_{ij} \sigma^2$ and $
 where the matrix $\mathbf A$ is a real, symmetric, non-singular matrix.
 
 \emph{Answer}
+
+令$\mathbf T$為$n \times n$的實方陣，而$\lambda_1, \lambda_2, \ldots, \lambda_n$為其$n$個特徵值。這$n$個數同時為以下兩個$n$次方程式的解：
+
+\begin{equation}
+\begin{aligned}
+\rm det(\mathbf T-\lambda\mathbf I)=0\\
+(\lambda_1 - \lambda)(\lambda_2 - \lambda)\ldots(\lambda_n - \lambda)=0
+\end{aligned}
+\end{equation}
+
+兩式的$\lambda_n$項係數皆為$(-1)^n$，故
+
+\begin{equation}
+\rm det(\mathbf T-\lambda\mathbf I)=(\lambda_1 - \lambda)(\lambda_2 - \lambda)\ldots(\lambda_n - \lambda)
+\end{equation}
+
+將$\lambda=-\frac{1}{\epsilon}$代入，得到：
+
+\begin{equation}
+\begin{aligned}
+\rm det(\mathbf T+\frac{1}{\epsilon}\mathbf I)=(\lambda_1+\frac{1}{\epsilon})(\lambda_2+\frac{1}{\epsilon})\ldots(\lambda_n+\frac{1}{\epsilon})\\
+\rm det(\mathbf I+\epsilon\mathbf T)=(1+\epsilon\lambda_1)(1+\epsilon\lambda_2)\ldots(1+\epsilon\lambda_n)
+\end{aligned}
+\end{equation}
+
+$\epsilon$趨近於0時，等號右邊約為$1+\epsilon\sum\limits_{i=1}^n\lambda_i=\rm det(\mathbf I)+\epsilon\rm Tr(\mathbf T)$。取極限，得：
+
+\begin{equation}
+\lim_{\epsilon \to 0}\frac{\rm det(\mathbf I+\epsilon\mathbf T)-\rm det(\mathbf I)}{\epsilon}  = \rm Tr(\mathbf T)
+\end{equation}
+
+等號右邊為行列式的微分在$\mathbf I$對$\mathbf T$的方向導數。故
+
+\begin{equation}
+\rm det'(\mathbf I)(\mathbf T)=\rm Tr(\mathbf T)
+\end{equation}
+
+現在，考慮函數$\rm det(\mathbf X)$的微分。首先
+
+\begin{equation}
+\rm det(\mathbf X) = \rm det(\mathbf A)\rm det(\mathbf A^{-1}\mathbf X)
+\end{equation}
+
+根據連鎖律，其微分為：
+
+\begin{equation}
+\rm det'(\mathbf X) = \rm det(\mathbf A)\rm det'(\mathbf A^{-1}\mathbf X)\mathbf A^{-1}
+\end{equation}
+
+將$\mathbf X=\mathbf A$代入，得
+
+\begin{equation}
+\rm det'(\mathbf A)=\rm det(\mathbf A)\rm det'(\mathbf I)\mathbf A^{-1}
+\end{equation}
+
+套用到$\frac{d\mathbf A}{d\alpha}$上，得到
+
+\begin{equation}
+\begin{aligned}
+\rm det'(\mathbf A)\frac{d\mathbf A}{d\alpha}=& \rm det(\mathbf A)\rm det'(\mathbf I)\mathbf A^{-1}\frac{d\mathbf A}{d\alpha}\\
+\frac{d}{d\alpha}\rm det(\mathbf A)=& \rm det(\mathbf A)\rm Tr(\mathbf A^{-1}\frac{d\mathbf A}{d\alpha})\\
+Tr(\mathbf A^{-1}\frac{d\mathbf A}{d\alpha})=&\frac{1}{\rm det(\mathbf A)}\frac{d}{d\alpha}\rm det(\mathbf A)\\
+=& \frac{d}{d\alpha}\rm ln(\rm det(\mathbf A))
+\end{aligned}
+\end{equation}
+
+即為所求。
 
 \end{document}

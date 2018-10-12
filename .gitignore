@@ -5,6 +5,7 @@ data/
 submission*.txt
 
 *.pdf
+!Report.pdf
 *.synctex.gz
 *.log
 *.aux
