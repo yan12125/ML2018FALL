@@ -10,6 +10,7 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
 
 % http://kuing.orzweb.net/viewthread.php?tid=3004
 \newcommand\rsx[1]{\left.{#1}\vphantom{\big|}\right|}
@@ -23,7 +24,7 @@
 
 \textbf{Problem 1.} (1\%) 請簡單描述你實作之 logistic regression 以及 generative model 於此 task的表現,試著討論可能原因。
 
-\textbf{Problem 2.} (1\%) 請試著將 input feature 中的 gender, education, martial status 等改用one-hot encoding 進行 training process,比較其模型準確率及其可能影響原因。
+\textbf{Problem 2.} (1\%) 請試著將 input feature 中的 gender, education, martial status 等改為 one-hot encoding 進行 training process,比較其模型準確率及其可能影響原因。
 
 \textbf{Problem 3.} (1\%) 請試著討論哪些 input features 的影響較大(實驗方法不限)。
 
@@ -73,5 +74,30 @@ I^2
 \end{equation}
 
 由於$f(x)$在整個實數軸皆為正數，因此I也是正數，即為1。
+
+\textbf{Problem 6.} (1\%) Given a three layers neural network, each layer labeled by its respective index variable. I.e. the letter of the index indicates which layer the symbol corresponds to.
+
+\begin{center}
+\includegraphics{network}
+\end{center}
+
+For convenience, we may consider only one training example and ignore the bias term.Forward propagation of the input $z_i$ is done as follows. Where $g(z)$ is some differentiable function (e.g. the logistic function).
+
+\begin{equation*}
+\begin{aligned}
+y_i = g(z_i)\\
+z_j = \sum_{i}^{}w_{ij}y_i\\
+y_j = g(z_j)\\
+z_k = \sum_{j}^{}w_{jk}y_j\\
+y_k = g(z_k)
+\end{aligned}
+\end{equation*}
+
+Derive the general expressions for the following partial derivatives of an error function $E$, also sime differentiable function, in the feed-forward neural network depicted. In other words, you should derive these partial derivatives into "computable derivative" (e.g., $\frac{\partial E}{\partial y_k}$ or $\frac{\partial z_k}{\partial w_{jk}}$).
+\begin{center}
+(a) $\frac{\partial E}{\partial z_k}$
+(b) $\frac{\partial E}{\partial z_j}$
+(c) $\frac{\partial E}{\partial w_{ij}}$
+\end{center}
 
 \end{document}
