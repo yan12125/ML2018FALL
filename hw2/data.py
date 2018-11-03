@@ -58,5 +58,5 @@ def read_features(do_one_hot_encoding=True):
     return ret
 
 
-def feature_selection(X):
-    pass
+def feature_selection(X, idx_to_remove):
+    return numpy.delete(X, [idx_to_remove], axis=1)
