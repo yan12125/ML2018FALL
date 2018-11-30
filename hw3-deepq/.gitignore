@@ -1,0 +1,15 @@
+*.pyc
+*.swp
+/*.pth.tar
+/data/
+/pre-trained/
+*.csv
+
+/main.py
+/model.py
+/License.txt
+/dataloader.py
+/concat.py
+/inference.py
+/train.py
+/mobilenetv2.py
